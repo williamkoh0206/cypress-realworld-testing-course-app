@@ -16,7 +16,7 @@ describe('NewsLetter Subscribe Form', ()=>{
         .contains('abc@gmail.com')
     })
 
-    it.only("Negative case that users enter the invalid email address format", () =>{
+    it("Negative case that users enter the invalid email address format", () =>{
         cy
         .getByData('email-input')
         .type('abc')
@@ -26,5 +26,17 @@ describe('NewsLetter Subscribe Form', ()=>{
         cy
         .getByData('success-message')
         .should('not.exist')
+    })
+    it.only("unhappy flow to prevent users using same email address", ()=>{
+        cy
+        .getByData('email-input')
+        .type('john@example.com')
+        cy
+        .getByData('submit-button')
+        .click()
+        cy
+        .getByData('server-error-message')
+        .contains("already exists. Please use a different email address.")
+        .should('exist')
     })
 })
